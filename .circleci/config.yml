@@ -3,20 +3,20 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: docker
+      - image: docker:20.10.14
 
     steps:
       - checkout
       
       # # Build Docker image
-      # - setup_remote_docker:
-      #     version: 20.10.14
-      #     docker_layer_caching: true
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
 
       - run:
-          name: print
+          name: build docker image
           command: |
-            python app.py
+            docker build -t ashiq:$CIRCLE_BUILD_NUM
 
       #       docker build -t ashiq .
 
