@@ -3,12 +3,12 @@ version: 2.1
 jobs:
   build-push-update-sync:
     docker:
-      - image: docker:20.10.14
+      - image: jimdo/aws-python
     steps:
       - checkout
       # # Build Docker image
       - setup_remote_docker:
-          version: 20.10.14
+          version: 
           docker_layer_caching: true
       - run:
           name: build docker image
