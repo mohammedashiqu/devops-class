@@ -32,8 +32,8 @@ jobs:
       - run:
           name: Build and Tag Docker Image
           command: |
-            docker build -t ashiq .
-            # docker tag $AWS_ECR_REPO_URL:$CIRCLE_SHA1 $AWS_ECR_REPO_URL:latest
+            docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
+            docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
 
       # Login to AWS ECR
       - run:
@@ -41,11 +41,11 @@ jobs:
           command: aws ecr get-login-password --region ap-south-1 --profile swz-test | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
 
       # Push Docker image to AWS ECR
-      # - run:
-      #     name: Push Docker Image to ECR
-      #     command: |
-      #       docker push $AWS_ECR_REPO_URL:$CIRCLE_SHA1
-      #       docker push $AWS_ECR_REPO_URL:latest
+      - run:
+          name: Push Docker Image to ECR
+          command: |
+            docker push 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
+            
 
 workflows:
   version: 2.1
