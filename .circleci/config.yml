@@ -16,7 +16,7 @@ jobs:
       - run:
           name: build docker image
           command: |
-            docker build -t ashiq:$CIRCLE_BUILD_NUM
+            docker build -t ashiq:$CIRCLE_BUILD_NUM .
 
       #       docker build -t ashiq .
 
