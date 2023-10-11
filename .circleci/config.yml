@@ -16,7 +16,7 @@ jobs:
       - run:
           name: print
           command: |
-            - python app.py
+            python app.py
 
       #       docker build -t ashiq .
 
