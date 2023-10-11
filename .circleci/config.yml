@@ -20,12 +20,14 @@ jobs:
             aws configure set aws_secret_access_key $password --profile swz-test
 
             export AWS_DEFAULT_PROFILE=swz-test
-            
 
+            aws sts get-caller-identity
+            
+            aws configure list
             aws s3 ls
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker images
-            aws ecr get-login-password --region ap-south-1 --profile swz-test | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
+            # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
             # docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
             # docker push ashiqummathoor/test1000:$CIRCLE_BUILD_NUM
 
