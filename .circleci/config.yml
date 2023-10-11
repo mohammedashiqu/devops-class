@@ -97,6 +97,7 @@ workflows:
       - update-app-and-sync:
           requires:
             - build-and-push
+            - hold
           filters:
             branches:
               only:
