@@ -58,8 +58,6 @@ jobs:
           name: update-app
           command: echo "hello"
 
-            
-
 workflows:
   version: 2.1
   build:
