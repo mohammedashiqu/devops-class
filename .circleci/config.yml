@@ -10,17 +10,15 @@ jobs:
       - run:
           name: login to ecr
           command: |
-            - run:
-                name: build docker image
-                command: |
-                  # Create AWS CLI profile
-                  aws configure set region ap-south-1 --profile swz-test
-                  aws configure set output json --profile swz-test
-                  aws configure set aws_access_key_id $username --profile swz-test
-                  aws configure set aws_secret_access_key $password --profile swz-test
+            
+            # Create AWS CLI profile
+            aws configure set region ap-south-1 --profile swz-test
+            aws configure set output json --profile swz-test
+            aws configure set aws_access_key_id $username --profile swz-test
+            aws configure set aws_secret_access_key $password --profile swz-test
 
-                  export AWS_DEFAULT_PROFILE=swz-test
-                  aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
+            export AWS_DEFAULT_PROFILE=swz-test
+            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
 
   # build-push-update-sync:
   #   docker:
