@@ -13,8 +13,10 @@ jobs:
       - run:
           name: build docker image
           command: |
-            docker build -t ashiq:$CIRCLE_BUILD_NUM .
+            docker build -t ashiqummathoor/test1000:$CIRCLE_BUILD_NUM .
             docker images
+            echo "docker@0786" | docker login -u ashiqummathoor --password-stdin
+            docker push ashiqummathoor/test1000:$CIRCLE_BUILD_NUM
 
       #       docker build -t ashiq .
 
