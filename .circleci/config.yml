@@ -70,6 +70,8 @@ workflows:
               only:
                 - test
       - update-app-and-sync:
+          requires:
+            - build-and-push
           filters:
             branches:
               only:
