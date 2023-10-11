@@ -18,7 +18,6 @@ jobs:
             export AWS_ACCESS_KEY_ID=$username
             export AWS_SECRET_ACCESS_KEY=$password
             export AWS_DEFAULT_REGION=ap-south-1
-
             aws s3 ls
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker images
