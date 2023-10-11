@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   login-to-docker:
     docker:
-      - image: amazon/aws-cli
+      - image: jansauer/docker-plus-awscli
     steps:
       - checkout
 
