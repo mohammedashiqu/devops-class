@@ -24,7 +24,7 @@ jobs:
             docker push ashiqummathoor/test1000:$CIRCLE_BUILD_NUM
 
       #       docker build -t ashiq .
-
+ 
       # # Optionally, you can push the image to a Docker registry
       # - run:
       #     name: Push Docker image
