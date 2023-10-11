@@ -1,22 +1,20 @@
 version: 2.1
 
 jobs:
-  build:
+  build-push-update-sync:
     docker:
       - image: docker:20.10.14
-
     steps:
       - checkout
-      
       # # Build Docker image
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
-
       - run:
           name: build docker image
           command: |
             docker build -t ashiq:$CIRCLE_BUILD_NUM .
+            docker images
 
       #       docker build -t ashiq .
 
@@ -31,4 +29,4 @@ workflows:
   version: 2.1
   build:
     jobs:
-      - build
+      - build-push-update-sync
