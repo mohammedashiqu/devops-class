@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   login-to-docker:
     docker:
-      - image: jansauer/docker-plus-awscli
+      - image: jansauer/docker-plus-awscli:latest
     steps:
       - checkout
 
