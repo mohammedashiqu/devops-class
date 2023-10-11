@@ -2,7 +2,7 @@ version: 2.1
 
 jobs:
   login-to-docker:
-    aws-cli:
+    docker:
       - image: amazon/aws-cli
     steps:
       - checkout
