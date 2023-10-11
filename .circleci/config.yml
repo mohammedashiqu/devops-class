@@ -45,6 +45,19 @@ jobs:
           name: Push Docker Image to ECR
           command: |
             docker push 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
+  update-app-and-sync:
+    docker:
+      - image: ubuntu:latest
+
+    steps:
+      # - checkout
+      # - setup_remote_docker:
+      #     version: 
+      #     docker_layer_caching: true
+      - run:
+          name: update-app
+          command: echo "hello"
+
             
 
 workflows:
@@ -56,3 +69,9 @@ workflows:
             branches:
               only:
                 - test
+      - update-app-and-sync:
+          filters:
+            branches:
+              only:
+                - test
+      
