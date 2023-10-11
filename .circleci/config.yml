@@ -75,5 +75,5 @@ workflows:
             branches:
               only:
                 - test
-                # - main
+                - main
       
