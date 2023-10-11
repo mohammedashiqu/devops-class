@@ -1,65 +1,55 @@
 version: 2.1
 
 jobs:
-  login-to-docker:
+  build-and-push:
     docker:
-      - image: jansauer/docker-plus-awscli:latest
+      - image: docker:latest
+
     steps:
       - checkout
 
+      # Install AWS CLI
       - run:
-          name: login-to-ecr
+          name: Install AWS CLI
           command: |
-            # Create AWS CLI profile
+            apk add --no-cache py-pip
+            pip install awscli
+
+      # Configure AWS CLI with ECR credentials
+      - run:
+          name: Configure AWS CLI
+          command: |
             aws configure set region ap-south-1 --profile swz-test
             aws configure set output json --profile swz-test
             aws configure set aws_access_key_id $username --profile swz-test
             aws configure set aws_secret_access_key $password --profile swz-test
-
             export AWS_DEFAULT_PROFILE=swz-test
-            # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
 
-  # build-push-update-sync:
-  #   docker:
-  #     - image: jimdo/aws-python
-  #   steps:
-  #     - checkout
-  #     # # Build Docker image
-  #     - setup_remote_docker:
-  #         version: 
-  #         docker_layer_caching: true
-  #     - run:
-  #         name: build docker image
-  #         command: |
-  #           # Create AWS CLI profile
-  #           aws configure set region ap-south-1 --profile swz-test
-  #           aws configure set output json --profile swz-test
-  #           aws configure set aws_access_key_id $username --profile swz-test
-  #           aws configure set aws_secret_access_key $password --profile swz-test
+      # Build and tag Docker image
+      - run:
+          name: Build and Tag Docker Image
+          command: |
+            docker build -t ashiq .
+            # docker tag $AWS_ECR_REPO_URL:$CIRCLE_SHA1 $AWS_ECR_REPO_URL:latest
 
-  #           export AWS_DEFAULT_PROFILE=swz-test
+      # Login to AWS ECR
+      - run:
+          name: Login to AWS ECR
+          command: aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
 
-  #           aws sts get-caller-identity
-            
-  #           aws configure list
-  #           aws s3 ls
-  #           docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
-  #           docker images
-  #           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
-            # docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
-            # docker push ashiqummathoor/test1000:$CIRCLE_BUILD_NUM
-
-      #       docker build -t ashiq .
- 
-      # # Optionally, you can push the image to a Docker registry
+      # Push Docker image to AWS ECR
       # - run:
-      #     name: Push Docker image
+      #     name: Push Docker Image to ECR
       #     command: |
-      #       echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      #       docker push your_image_name:latest
+      #       docker push $AWS_ECR_REPO_URL:$CIRCLE_SHA1
+      #       docker push $AWS_ECR_REPO_URL:latest
 
 workflows:
   version: 2.1
   build:
     jobs:
-      - login-to-docker
+      - build-and-push:
+          filters:
+            branches:
+              only:
+                - test
