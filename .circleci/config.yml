@@ -1,33 +1,54 @@
 version: 2.1
 
 jobs:
-  build-push-update-sync:
-    docker:
-      - image: jimdo/aws-python
+  login-to-docker:
+    aws-cli:
+      - image: amazon/aws-cli
     steps:
       - checkout
-      # # Build Docker image
-      - setup_remote_docker:
-          version: 
-          docker_layer_caching: true
+
       - run:
-          name: build docker image
+          name: login to ecr
           command: |
-            # Create AWS CLI profile
-            aws configure set region ap-south-1 --profile swz-test
-            aws configure set output json --profile swz-test
-            aws configure set aws_access_key_id $username --profile swz-test
-            aws configure set aws_secret_access_key $password --profile swz-test
+            - run:
+                name: build docker image
+                command: |
+                  # Create AWS CLI profile
+                  aws configure set region ap-south-1 --profile swz-test
+                  aws configure set output json --profile swz-test
+                  aws configure set aws_access_key_id $username --profile swz-test
+                  aws configure set aws_secret_access_key $password --profile swz-test
 
-            export AWS_DEFAULT_PROFILE=swz-test
+                  export AWS_DEFAULT_PROFILE=swz-test
+                  aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
 
-            aws sts get-caller-identity
+  # build-push-update-sync:
+  #   docker:
+  #     - image: jimdo/aws-python
+  #   steps:
+  #     - checkout
+  #     # # Build Docker image
+  #     - setup_remote_docker:
+  #         version: 
+  #         docker_layer_caching: true
+  #     - run:
+  #         name: build docker image
+  #         command: |
+  #           # Create AWS CLI profile
+  #           aws configure set region ap-south-1 --profile swz-test
+  #           aws configure set output json --profile swz-test
+  #           aws configure set aws_access_key_id $username --profile swz-test
+  #           aws configure set aws_secret_access_key $password --profile swz-test
+
+  #           export AWS_DEFAULT_PROFILE=swz-test
+
+  #           aws sts get-caller-identity
             
-            aws configure list
-            aws s3 ls
-            docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
-            docker images
-            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
+  #           aws configure list
+  #           aws s3 ls
+  #           docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
+  #           docker images
+  #           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
             # docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
             # docker push ashiqummathoor/test1000:$CIRCLE_BUILD_NUM
 
@@ -44,4 +65,4 @@ workflows:
   version: 2.1
   build:
     jobs:
-      - build-push-update-sync
+      - login-to-docker
