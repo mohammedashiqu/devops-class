@@ -18,7 +18,7 @@ jobs:
             apk add --no-cache py-pip
             pip install awscli
 
-      # Configure AWS CLI with ECR credentials
+      # Configure AWS CLI with ECR credentials+1
       - run:
           name: Configure AWS CLI
           command: |
