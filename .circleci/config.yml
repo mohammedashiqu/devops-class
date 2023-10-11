@@ -11,7 +11,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            sudo docker build -t ashiq .
+            docker --version
 
       # # Optionally, you can push the image to a Docker registry
       # - run:
