@@ -90,6 +90,10 @@ workflows:
               only:
                 - test
                 - main
+      - hold:
+          type: approval
+          requires:
+            - build-and-push
       - update-app-and-sync:
           requires:
             - build-and-push
