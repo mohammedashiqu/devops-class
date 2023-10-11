@@ -69,6 +69,7 @@ workflows:
             branches:
               only:
                 - test
+                #- main
       - update-app-and-sync:
           requires:
             - build-and-push
@@ -76,4 +77,5 @@ workflows:
             branches:
               only:
                 - test
+                - main
       
