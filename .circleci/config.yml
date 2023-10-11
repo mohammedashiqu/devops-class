@@ -70,6 +70,7 @@ jobs:
       - run:
           name: update-app
           command: |
+            apt-get update
             apt install git -y
             git clone https://BTF-K8S-APP-USER-01-at-848634117349:PLOnhNEc0jFGdYfzFnPhdREplMqrVCljdOJ0lZnRBkM=@git-codecommit.ap-south-1.amazonaws.com/v1/repos/cd-dev-yaml
             cd cd-dev-yaml/auth-go-beta
