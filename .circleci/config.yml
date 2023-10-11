@@ -58,6 +58,19 @@ jobs:
           name: update-app
           command: echo "hello"
 
+  update-app-and-sync-test:
+    docker:
+      - image: ubuntu:latest
+
+    steps:
+      # - checkout
+      # - setup_remote_docker:
+      #     version: 
+      #     docker_layer_caching: true
+      - run:
+          name: update-app
+          command: echo "hello this is from test2"
+
 workflows:
   version: 2.1
   build:
@@ -66,7 +79,7 @@ workflows:
           filters:
             branches:
               only:
-                - test
+                # - test
                 - main
       - update-app-and-sync:
           requires:
@@ -74,6 +87,12 @@ workflows:
           filters:
             branches:
               only:
-                - test
+                # - test
                 - main
+      - update-app-and-sync-test:
+          filters:
+            branches:
+              only:
+                - test
+                
       
