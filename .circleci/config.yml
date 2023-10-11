@@ -13,11 +13,17 @@ jobs:
       - run:
           name: build docker image
           command: |
-            export AWS_DEFAULT_PROFILE=swz-dev
-            export AWS_PROFILE=swz-dev
+            # Create AWS CLI profile
+            aws configure set aws_access_key_id $username --profile swz
+            aws configure set aws_secret_access_key $password --profile swz
+            aws configure set region ap-south-1 --profile swz
+
+            # Export AWS credentials for the current session
             export AWS_ACCESS_KEY_ID=$username
             export AWS_SECRET_ACCESS_KEY=$password
             export AWS_DEFAULT_REGION=ap-south-1
+            export AWS_PROFILE=swz
+            
             aws s3 ls
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker images
