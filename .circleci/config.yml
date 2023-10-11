@@ -24,6 +24,7 @@ jobs:
             export AWS_DEFAULT_REGION=ap-south-1
             export AWS_PROFILE=swz
             
+            
             aws s3 ls
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker images
