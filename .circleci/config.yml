@@ -25,7 +25,7 @@ jobs:
             aws s3 ls
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker images
-            # aws ecr get-login-password --region ap-south-1 --no-include-email | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
+            aws ecr get-login-password --region ap-south-1 --no-include-email | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
             # docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
             # docker push ashiqummathoor/test1000:$CIRCLE_BUILD_NUM
 
