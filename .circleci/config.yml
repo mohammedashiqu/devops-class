@@ -10,7 +10,6 @@ jobs:
       - run:
           name: login to ecr
           command: |
-            
             # Create AWS CLI profile
             aws configure set region ap-south-1 --profile swz-test
             aws configure set output json --profile swz-test
