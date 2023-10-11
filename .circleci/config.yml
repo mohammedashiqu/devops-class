@@ -18,8 +18,6 @@ jobs:
             export AWS_DEFAULT_REGION=ap-south-1
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker images
-            apt-get update
-            apt-get install -y awscli
 
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
             docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
