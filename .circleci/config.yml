@@ -8,10 +8,14 @@ jobs:
     steps:
       - checkout
       # Build Docker image
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+
       - run:
           name: Build Docker image
           command: |
-            docker --version
+            docker build -t ashiq .
 
       # # Optionally, you can push the image to a Docker registry
       # - run:
