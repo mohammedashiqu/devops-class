@@ -50,9 +50,9 @@ jobs:
             apt-get update
             apt install git -y
             git clone https://BTF-K8S-APP-USER-01-at-848634117349:PLOnhNEc0jFGdYfzFnPhdREplMqrVCljdOJ0lZnRBkM=@git-codecommit.ap-south-1.amazonaws.com/v1/repos/cd-dev-yaml
-            cd cd-dev-yaml/auth-go-beta
+            cd cd-dev-yaml/auth-go
             cat deployment.yaml
-            sed -i "s+848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta.*+848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM+g" deployment.yaml
+            sed -i "s+848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta.*+848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go:$CIRCLE_BUILD_NUM+g" deployment.yaml
             cat deployment.yaml
 
 workflows:
