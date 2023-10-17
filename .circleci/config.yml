@@ -4,20 +4,17 @@ jobs:
   build-and-push:
     docker:
       - image: docker:latest
-
     steps:
       - checkout
       - setup_remote_docker:
           version: 
           docker_layer_caching: true
-
       # Install AWS CLI
       - run:
           name: Install AWS CLI
           command: |
             apk add --no-cache py-pip
             pip install awscli
-
       # Configure AWS CLI with ECR credentials+1
       - run:
           name: Configure AWS CLI
@@ -27,46 +24,26 @@ jobs:
             aws configure set aws_access_key_id $username --profile swz-test
             aws configure set aws_secret_access_key $password --profile swz-test
             export AWS_DEFAULT_PROFILE=swz-test
-
       # Build and tag Docker image
       - run:
           name: Build and Tag Docker Image
           command: |
             docker build -t auth-go-beta:$CIRCLE_BUILD_NUM .
             docker tag auth-go-beta:$CIRCLE_BUILD_NUM 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
-
       # Login to AWS ECR
       - run:
           name: Login to AWS ECR
           command: aws ecr get-login-password --region ap-south-1 --profile swz-test | docker login --username AWS --password-stdin 848634117349.dkr.ecr.ap-south-1.amazonaws.com
-
       # Push Docker image to AWS ECR
       - run:
           name: Push Docker Image to ECR
           command: |
             docker push 848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM
-  # update-app-and-sync:
-  #   docker:
-  #     - image: ubuntu:latest
-
-  #   steps:
-  #     # - checkout
-  #     # - setup_remote_docker:
-  #     #     version: 
-  #     #     docker_layer_caching: true
-  #     - run:
-  #         name: update-app
-  #         command: echo "hello"
 
   update-app-and-sync:
     docker:
       - image: ubuntu:latest
-
     steps:
-      # - checkout
-      # - setup_remote_docker:
-      #     version: 
-      #     docker_layer_caching: true
       - run:
           name: update-app
           command: |
@@ -78,22 +55,21 @@ jobs:
             sed -i "s+848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta.*+848634117349.dkr.ecr.ap-south-1.amazonaws.com/auth-go-beta:$CIRCLE_BUILD_NUM+g" deployment.yaml
             cat deployment.yaml
 
-
-
 workflows:
   version: 2.1
   build:
     jobs:
+      - hold:
+          type: approval
+
       - build-and-push:
+          requires:
+            - hold
           filters:
             branches:
               only:
-                - test
                 - main
-      - hold:
-          type: approval
-          requires:
-            - build-and-push
+      
       - update-app-and-sync:
           requires:
             - build-and-push
@@ -101,7 +77,6 @@ workflows:
           filters:
             branches:
               only:
-                - test
                 - main
                 
       
