@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goknow-frontend-app
+  namespace: goknow-frontend
+  labels:
+    app: goknow-frontend
+  annotations: 
+    secrets.infisical.com/auto-reload: "true" # <- redeployment annotation
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goknow-frontend
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: goknow-frontend
+    spec:
+      nodeSelector:
+        arm64: yes-yes
+      containers:
+      - name: goknow-frontend
+        image: 848634117349.dkr.ecr.ap-south-1.amazonaws.com/goknow-frontend:153-SWZ
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "50m"
+          limits:
+            memory: "200Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: goknow-frontend-secret # managed secret name
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 50
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: goknow-frontend-svc
+  namespace: goknow-frontend
+  labels:
+    app: goknow-frontend
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      name: http-3000  # Updated port name
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: goknow-frontend

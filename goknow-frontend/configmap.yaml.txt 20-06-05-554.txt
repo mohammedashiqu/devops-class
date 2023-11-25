@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nhmate-admin-dashboard-cfg
+  namespace: nhmate-admin-dashboard
+  labels:
+    app: nhmate-admin-dashboard
+data:
+  REACT_APP_API_BASE_URL: "https://nhmate-api.dev.nhmates.com/v1/"
