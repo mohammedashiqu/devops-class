@@ -1,0 +1,42 @@
+affinity: {}
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+fullnameOverride: ""
+image:
+  pullPolicy: IfNotPresent
+  repository: redislabs/redisinsight
+  tag: latest
+imagePullSecrets: []
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - host: chart-example.local
+    paths: []
+  tls: []
+nameOverride: ""
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext: {}
+replicaCount: 1
+resources: {}
+securityContext: {}
+service:
+  port: 80
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  create: true
+  name: ""
+tolerations: []
+
+# Persistent Volume Configuration
+persistence:
+  enabled: true
+  existingClaim: ""  # If you have an existing PersistentVolumeClaim
+  storageClassName: "gp2"  # Specify storage class if needed
+  accessMode: ReadWriteOnce
+  size: 2Gi  # Adjust the size according to your needs
