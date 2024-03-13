@@ -1,5 +1,13 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_REPO1 = "gcr.io/nayandevops/qa-kafka_secured_layers-c3-v2-web"
+        DOCKER_REPO2 = "gcr.io/nayandevops/qa-kafka_secured_layers-c3-v2-kafka"
+        DOCKER_REPO3 = "gcr.io/nayandevops/qa-kafka_secured_layers-c3-v2-scheduler"
+        doError = '0'
+        BUILD_USER = ''
+        eksc3_config = credentials('EKS-c3-v2-prod-recovered') 
+    }
 
     stages {
         stage('Checkout') {
@@ -34,6 +42,7 @@ pipeline {
             steps {
                 sh '''
                 echo $BUILD_NUMBER
+                echo hey $DOCKER_REPO3
                 '''
             }
         }
