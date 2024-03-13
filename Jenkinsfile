@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Check out code from the Git repository
-                echo "checkout scm"
+                sh "ls"
             }
         }
 
